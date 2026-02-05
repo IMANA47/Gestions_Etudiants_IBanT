@@ -2,17 +2,22 @@
 $host = "localhost";
 $db   = "gestion_notes";
 $user = "root";
-$pass = "";
+$pass = "root123#";
 
+// mysqli connection for legacy code expecting $conn
+$conn = mysqli_connect($host, $user, $pass, $db);
+if (! $conn) {
+    die("Erreur MySQLi : " . mysqli_connect_error());
+}
+
+// try to create PDO if available (optional)
+$dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
 try {
-    $pdo = new PDO(
-        "mysql:host=$host;dbname=$db;charset=utf8",
-        $user,
-        $pass,
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ]
-    );
+    $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
 } catch (PDOException $e) {
-    die("Erreur BD : " . $e->getMessage());
+    // PDO MySQL driver may not be installed in CLI or environment, fall back to mysqli
+    $pdo = null;
 }

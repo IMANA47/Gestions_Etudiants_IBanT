@@ -1,42 +1,65 @@
 <?php
 session_start();
-require 'config.php';
+require_once __DIR__ . "/../src/services/auth_service.php";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    $stmt = $pdo->prepare("SELECT * FROM utilisateur WHERE username=?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch();
-
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['role'] = $user['role'];
-        $_SESSION['idEtudiant'] = $user['idEtudiant'];
-        if ($user['role'] == 'admin') {
-            header("Location: admin/etudiant.php");
+if ($_POST) {
+    if (login($_POST['username'], $_POST['password'])) {
+        if ($_SESSION['role'] === 'admin') {
+            header("Location: /gestions_etudiants_ibant/public/admin/dashboard.php");
+            exit;
         } else {
-            header("Location: etudiant/notes.php");
+            header("Location: /gestions_etudiants_ibant/public/etudiant/notes.php");
+            exit;
         }
-        exit;
     } else {
         $error = "Identifiants incorrects";
     }
 }
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="container">
-    <h2>Connexion</h2>
-    <?php if(isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
-    <form method="post">
-        <input type="text" name="username" class="form-control" placeholder="Utilisateur" required><br>
-        <input type="password" name="password" class="form-control" placeholder="Mot de passe" required><br>
-        <button type="submit" class="btn btn-primary">Se connecter</button>
-    </form>
+
+<body class="bg-light">
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="card shadow" style="max-width: 400px; width: 100%;">
+        <div class="card-body p-4">
+
+            <h4 class="text-center mb-4">Connexion</h4>
+
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Login</label>
+                    <input type="text" name="username" class="form-control" placeholder="Login" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Mot de passe</label>
+                    <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Se connecter
+                </button>
+            </form>
+
+            <?php if (!empty($error)): ?>
+                <div class="alert alert-danger mt-3 text-center">
+                    <?= htmlspecialchars($error) ?>
+                </div>
+            <?php endif; ?>
+
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

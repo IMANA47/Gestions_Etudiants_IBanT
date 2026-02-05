@@ -1,38 +1,39 @@
 <?php
-session_start();
-require_once "../../src/services/etudiant_service.php";
-require_once "../../src/helpers/auth_check.php";
+require_once "../../src/services/security_service.php";
+require_once "../../src/repositories/etudiant_repository.php";
+check_admin();
 
-if ($_SESSION['user']['role'] !== 'ADMIN') {
-    header("Location: ../login.php");
-    exit;
+$q = trim($_GET['q'] ?? '');
+if ($q !== '') {
+    $etudiants = findEtudiantsByName($q);
+} else {
+    $etudiants = getAllEtudiants();
 }
-
-if (isset($_POST['ajouter'])) {
-    ajouter_etudiant_service($_POST);
-}
-
-$etudiants = etudiant_find_all();
 ?>
 
-<h2>Gestion des étudiants</h2>
-
-<form method="post">
-    <input name="matriEt" placeholder="Matricule">
-    <input name="nom" placeholder="Nom">
-    <input name="mail" placeholder="Email">
-    <input name="classe" placeholder="ID Classe">
-    <button name="ajouter">Ajouter</button>
+<h2>Étudiants</h2>
+<form method="get" class="mb-3">
+  <div class="input-group">
+    <input type="search" name="q" value="<?= htmlspecialchars($q) ?>" class="form-control" placeholder="Rechercher par nom">
+    <button class="btn btn-primary" type="submit">Rechercher</button>
+    <a class="btn btn-success ms-2" href="etudiant_add.php">Ajouter</a>
+  </div>
 </form>
 
-<table border="1">
-<?php while ($e = $etudiants->fetch()) { ?>
+<table class="table table-bordered">
+<thead><tr><th>Matricule</th><th>Nom</th><th>Mail</th><th>Classe</th><th>Actions</th></tr></thead>
+<tbody>
+<?php while($e = mysqli_fetch_assoc($etudiants)): ?>
 <tr>
-    <td><?= $e['nom'] ?></td>
-    <td><?= $e['libelleClasse'] ?></td>
-    <td>
-        <a href="?delete=<?= $e['id'] ?>">Supprimer</a>
-    </td>
+<td><?= htmlspecialchars($e['matriEt']) ?></td>
+<td><?= htmlspecialchars($e['nom']) ?></td>
+<td><?= htmlspecialchars($e['mail']) ?></td>
+<td><?= htmlspecialchars($e['libelleClasse'] ?? '') ?></td>
+<td>
+  <a class="btn btn-sm btn-primary" href="etudiant_edit.php?id=<?= $e['id'] ?>">Éditer</a>
+  <a class="btn btn-sm btn-danger" href="etudiant_delete.php?id=<?= $e['id'] ?>" onclick="return confirm('Supprimer cet étudiant ?')">Supprimer</a>
+</td>
 </tr>
-<?php } ?>
+<?php endwhile; ?>
+</tbody>
 </table>

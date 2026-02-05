@@ -1,10 +1,7 @@
 <?php
-require_once __DIR__ . '/../repositories/etudiant_repo.php';
+require_once __DIR__.'/../repositories/etudiant_repository.php';
 
-function ajouter_etudiant_service($data) {
-    if (empty($data['nom']) || empty($data['matriEt'])) {
-        return false;
-    }
+function ajouter_etudiant($data) {
     return etudiant_create(
         $data['matriEt'],
         $data['nom'],
@@ -12,3 +9,4 @@ function ajouter_etudiant_service($data) {
         $data['classe']
     );
 }
+?>
