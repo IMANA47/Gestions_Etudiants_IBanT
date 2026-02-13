@@ -2,6 +2,7 @@
 require_once "../../src/services/security_service.php";
 require_once "../../src/repositories/etudiant_repository.php";
 require_once "../../src/repositories/classe_repository.php";
+require_once "../_header.php";
 check_admin();
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -47,7 +48,6 @@ if ($_POST) {
 
 $classes = getAllClasses();
 ?>
-
 <h2>Modifier l'étudiant</h2>
 
 <?php if (!empty($errors)): ?>

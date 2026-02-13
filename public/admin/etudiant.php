@@ -1,6 +1,7 @@
 <?php
 require_once "../../src/services/security_service.php";
 require_once "../../src/repositories/etudiant_repository.php";
+require_once "../_header.php";
 check_admin();
 
 $q = trim($_GET['q'] ?? '');
@@ -37,3 +38,5 @@ if ($q !== '') {
 <?php endwhile; ?>
 </tbody>
 </table>
+
+<?php require_once "../_footer.php"; ?>

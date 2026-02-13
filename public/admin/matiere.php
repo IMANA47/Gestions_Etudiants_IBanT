@@ -5,9 +5,9 @@ check_admin();
 
 $q = trim($_GET['q'] ?? '');
 if ($q !== '') {
-    $matieres = matiere_search_mysqli($q);
+    $matieres = matiere_search($q);
 } else {
-    $matieres = matiere_all_mysqli();
+    $matieres = matiere_all();
 }
 ?>
 
@@ -23,7 +23,9 @@ if ($q !== '') {
 <table class="table table-bordered">
 <thead><tr><th>Code</th><th>Libellé</th><th>Actions</th></tr></thead>
 <tbody>
-<?php while ($m = mysqli_fetch_assoc($matieres)): ?>
+<?php
+if (is_object($matieres) && method_exists($matieres, 'fetch')) {
+    while ($m = $matieres->fetch()) : ?>
 <tr>
 <td><?= htmlspecialchars($m['idMat']) ?></td>
 <td><?= htmlspecialchars($m['libelleMat']) ?></td>
@@ -32,6 +34,19 @@ if ($q !== '') {
   <a class="btn btn-sm btn-danger" href="matiere_delete.php?id=<?= $m['id'] ?>" onclick="return confirm('Supprimer cette matière ?')">Supprimer</a>
 </td>
 </tr>
-<?php endwhile; ?>
+<?php endwhile;
+} else {
+    while ($m = mysqli_fetch_assoc($matieres)) : ?>
+<tr>
+<td><?= htmlspecialchars($m['idMat']) ?></td>
+<td><?= htmlspecialchars($m['libelleMat']) ?></td>
+<td>
+  <a class="btn btn-sm btn-primary" href="matiere_edit.php?id=<?= $m['id'] ?>">Éditer</a>
+  <a class="btn btn-sm btn-danger" href="matiere_delete.php?id=<?= $m['id'] ?>" onclick="return confirm('Supprimer cette matière ?')">Supprimer</a>
+</td>
+</tr>
+<?php endwhile;
+}
+?>
 </tbody>
 </table>

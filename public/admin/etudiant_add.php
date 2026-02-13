@@ -2,6 +2,7 @@
 require_once "../../src/services/security_service.php";
 require_once "../../src/repositories/etudiant_repository.php";
 require_once "../../src/repositories/classe_repository.php";
+require_once "../_header.php";
 check_admin();
 
 $errors = [];

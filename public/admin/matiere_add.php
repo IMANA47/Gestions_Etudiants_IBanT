@@ -14,7 +14,7 @@ if ($_POST) {
         $errors[] = 'Code et libellé sont requis.';
     }
     if (empty($errors)) {
-        if (matiere_create_mysqli($idMat, $libelle)) {
+        if (matiere_create($idMat, $libelle)) {
             $_SESSION['flash'] = 'Matière ajoutée.';
             header('Location: matiere.php');
             exit;

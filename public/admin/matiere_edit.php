@@ -10,7 +10,7 @@ if (!$id) {
     exit;
 }
 
-$m = matiere_get_mysqli($id);
+$m = matiere_get($id);
 if (!$m) {
     $_SESSION['flash'] = 'Matière introuvable.';
     header('Location: matiere.php');
