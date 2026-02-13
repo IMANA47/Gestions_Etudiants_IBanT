@@ -1,3 +1,8 @@
+[![Français](https://img.shields.io/badge/lang-FR-blue)](/docs/README_fr.md)
+[![English](https://img.shields.io/badge/lang-EN-red)](README.md)
+
+
+
 # Grade Management System
 
 A professional, user-friendly grade management application built with PHP and Bootstrap 5. This application provides administrators with complete control over student records, subjects, and grade management.
