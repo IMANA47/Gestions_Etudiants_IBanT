@@ -1,4 +1,5 @@
-Voici **la traduction fidèle en français**, sans modification du contenu ni de la structure :
+[![Français](https://img.shields.io/badge/lang-FR-blue)](/docs/README_fr.md)
+[![English](https://img.shields.io/badge/lang-EN-red)](../README.md)
 
 ---
 
