@@ -4,13 +4,11 @@ $db   = "gestion_notes";
 $user = "root";
 $pass = "root123#";
 
-// mysqli connection for legacy code expecting $conn
 $conn = mysqli_connect($host, $user, $pass, $db);
 if (! $conn) {
     die("Erreur MySQLi : " . mysqli_connect_error());
 }
 
-// try to create PDO if available (optional)
 $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
 try {
     $pdo = new PDO($dsn, $user, $pass, [
