@@ -1,8 +1,0 @@
-/* assets/css/custom.css */
-body { background: #f7f9fc; color: #222; }
-.navbar-brand { font-weight: 600; }
-.container.my-4 { background: #fff; padding: 20px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-h2 { margin-bottom: 1rem; }
-.table th, .table td { vertical-align: middle; }
-.btn { min-width: 90px; }
-.alert-info { background: #e7f3ff; border-color: #cfe9ff; color: #084298; }
